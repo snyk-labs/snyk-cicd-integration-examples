@@ -9,8 +9,7 @@ env:
 phases:
   install:
     commands:
-      - npm install -g snyk
-      - curl -Lo ./snyk "https://github.com/snyk/snyk/releases/download/v1.134.2/snyk-linux"
+      - curl -Lo ./snyk "https://github.com/snyk/snyk/releases/download/v1.136.3/snyk-linux"
       - chmod -R +x ./snyk
       - ./snyk auth $SNYK_AUTH_TOKEN
 
