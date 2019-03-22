@@ -9,7 +9,14 @@ env:
 phases:
   install:
     commands:
-      - curl -Lo ./snyk "https://github.com/snyk/snyk/releases/download/v1.136.3/snyk-linux"
+      # Use this if you just want to use a fixed version:
+#      - curl -Lo ./snyk "https://github.com/snyk/snyk/releases/download/v1.136.3/snyk-linux"
+
+      # Use this to always get the latest version:
+      - latest_version=$(curl -Is "https://github.com/snyk/snyk/releases/latest" | grep "Location" | sed s#.*tag/##g | tr -d "\r")
+      - snyk_cli_dl_linux="https://github.com/snyk/snyk/releases/download/${latest_version}/snyk-linux"
+      - curl -Lo ./snyk $snyk_cli_dl_linux
+
       - chmod -R +x ./snyk
 
   build:
