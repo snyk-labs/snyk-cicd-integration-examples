@@ -4,14 +4,13 @@ env:
   parameter-store:
     # Requires that you have a secure string in AWS Systems Manager Parameter Store
     # called "snykAuthToken" with your Snyk token.
-    SNYK_AUTH_TOKEN: "snykAuthToken"
+    SNYK_TOKEN: "snykAuthToken"
 
 phases:
   install:
     commands:
       - curl -Lo ./snyk "https://github.com/snyk/snyk/releases/download/v1.136.3/snyk-linux"
       - chmod -R +x ./snyk
-      - ./snyk auth $SNYK_AUTH_TOKEN
 
   build:
     commands:
