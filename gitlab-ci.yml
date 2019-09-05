@@ -1,7 +1,7 @@
 # Example snyk script for gitlab pipelines
 
 
-dependancy_scanning:
+dependency_scanning:
   image: node:latest
   stage: test
   script:
