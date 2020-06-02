@@ -1,0 +1,24 @@
+# Example Snyk script for GitLab CI/CD Pipeline with Go Modules project
+
+stages:
+  - compile
+build:
+  stage: compile
+  image: golang:1.14
+  script:
+    - go build -o binary
+    - curl -sL https://deb.nodesource.com/setup_10.x | bash -
+    - apt-get install nodejs
+    - npm install -g snyk
+    - npm install snyk-to-html -g
+    # Run snyk help, snyk auth, snyk monitor, snyk test to break build and output report
+    #- snyk --help
+    - snyk auth $SNYK_TOKEN
+    - snyk monitor --project-name=go-goof-gitlab-CI2
+    - snyk test --json | snyk-to-html -o snyk_results.html
+  
+  # Save report to artifacts
+  artifacts:
+    when: always
+    paths: 
+      - snyk_results.html

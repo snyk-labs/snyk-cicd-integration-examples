@@ -1,5 +1,4 @@
-# Example snyk script for gitlab pipelines
-
+# Example Snyk script for GitLab CI/CD Pipeline with Node.js project
 
 dependancy_scanning:
   image: node:latest
@@ -15,7 +14,7 @@ dependancy_scanning:
     - snyk monitor --project-name=goof-gitlab
     - snyk test --json | snyk-to-html -o snyk_results.html
  
-  # Output report
+  # Save report to artifacts
   artifacts:
     when: always
     paths: 
