@@ -1,0 +1,13 @@
+kind: pipeline
+name: snyk-example
+
+steps:
+- name: security
+  image: snyk/snyk-cli:npm
+  pull: always # always fetch the latest version of image
+  environment:
+    SNYK_TOKEN:
+      from_secret: SNYK_TOKEN # setup secret in Drone
+  commands:
+  - snyk monitor --all-projects # Autodetect all projects in working directory, scan and publish results to Snyk
+  - snyk test --all-projects # Autodetect all projects in working directory
