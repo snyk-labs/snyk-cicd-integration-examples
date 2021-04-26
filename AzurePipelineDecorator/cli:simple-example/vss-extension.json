@@ -1,0 +1,50 @@
+{
+    "manifestVersion": 1,
+    "id": "pipelinedecoratorcheckA",
+    "name": "Test Pipeline Decorator - Check snyk install",
+    "version": "1.0.9",
+    "publisher": "<YOUR_PUBLISHER_NAME>",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],    
+    "description": "This is an example of a test Decorator which works with Build and YAML pipelines, and execute AFTER any other task",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "contributions": [
+        {
+            "id": "snyk-pipeline-decorator-extension-hub",
+            "type": "ms.vss-web.hub",
+            "targets": [
+                "ms.vss-code-web.code-hub-group"
+            ],
+            "properties": {
+                "name": "Snyk Pipeline Decorator Extension Hub",
+                "uri": "snyk-pipeline-decorator-extension-hub.html"
+            }
+        },
+        {
+            "id": "my-required-task",
+            "type": "ms.azure-pipelines.pipeline-decorator",
+            "targets": [
+                "ms.azure-pipelines-agent-job.post-job-tasks"
+            ],
+            "properties": {
+                "template": "snyk-pipeline-deco-cli.yml"
+            }
+        }
+    ],
+    "files": [
+        {
+            "path": "snyk-pipeline-decorator-extension-hub.html",
+            "addressable": true
+        },
+        {
+            "path": "snyk-pipeline-deco-cli.yml",
+            "addressable": true,
+            "contentType": "text/plain"
+        }
+    ]
+}
