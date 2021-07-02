@@ -1,6 +1,6 @@
 # Azure Pipleline CI/CD Examples using Decorators
 
-Azure pipeline decorators let you add steps at the beginning and at the end of every job. 
+Azure Pipeline decorators let you add steps at the beginning and at the end of every job. 
 
 Note : Decorators in this repo work only with Azure DevOps 
 
@@ -74,5 +74,4 @@ For more info refer: https://docs.microsoft.com/en-us/azure/devops/extend/get-st
 After the plugin has been installed run any of the pipelines under the organization and you should see one of the jobs as "Decorator injected task..."
 
 ![image](https://user-images.githubusercontent.com/32653970/116176786-bedd6e80-a6e0-11eb-8f49-892158b6a9c6.png)
-
 
