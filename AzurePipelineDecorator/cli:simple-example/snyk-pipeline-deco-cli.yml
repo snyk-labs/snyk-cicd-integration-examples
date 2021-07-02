@@ -4,9 +4,8 @@ steps:
   inputs:
     script: |
       sudo npm install -g snyk
-      sudo npm install snyk-to-html -g
+      sudo npm install -g snyk-to-html
       sudo snyk auth $(SNYK_TOKEN)
       sudo snyk monitor --all-projects --org=YOUR_ORG_NAME
       sudo snyk test --all-projects --json | snyk-to-html -o snyk_results.html
        
-
