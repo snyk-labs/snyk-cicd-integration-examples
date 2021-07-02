@@ -10,7 +10,7 @@ Check the official documentation [here](https://docs.microsoft.com/en-us/azure/d
 
 This project provides you guidelines on how to inject Snyk test and monitor checks post build execution of all the pipelines in the organization. 
 
-With a traditional pipeline approach a user would normally be required to add the Snyk task for every pipeline to check for any vulnerabilities. This process relies a lot on developers to remember to add this step/task in all the new and existing pipelines. 
+With a traditional pipeline approach, a user would normally be required to add the Snyk task for every pipeline to check for any vulnerabilities. This process relies a lot on developers to remember to add this step/task in all the new and existing pipelines. 
 
 Using Pipeline decorators (private extensions) Snyk checks can be scaled across the organizations. 
 
@@ -74,4 +74,3 @@ For more info refer: https://docs.microsoft.com/en-us/azure/devops/extend/get-st
 After the plugin has been installed run any of the pipelines under the organization and you should see one of the jobs as "Decorator injected task..."
 
 ![image](https://user-images.githubusercontent.com/32653970/116176786-bedd6e80-a6e0-11eb-8f49-892158b6a9c6.png)
-
