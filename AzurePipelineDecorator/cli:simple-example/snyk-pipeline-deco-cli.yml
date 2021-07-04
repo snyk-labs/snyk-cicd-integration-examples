@@ -3,9 +3,9 @@ steps:
   displayName: 'Decorator-injected Task to test Snyk using CLI'
   inputs:
     script: |
-      sudo npm install -g snyk
-      sudo npm install -g snyk-to-html
-      sudo snyk auth $(SNYK_TOKEN)
-      sudo snyk monitor --all-projects --org=YOUR_ORG_NAME
-      sudo snyk test --all-projects --json | snyk-to-html -o snyk_results.html
+       npm install -g snyk
+       npm install -g snyk-to-html
+       snyk auth $(SNYK_TOKEN)
+       snyk monitor --all-projects --org=YOUR_ORG_NAME
+       snyk test --all-projects --json | snyk-to-html -o snyk_results.html
        
