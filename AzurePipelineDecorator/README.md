@@ -40,9 +40,9 @@ Based on the implementation of choice, you would need to update two files with r
 - Update the YAML file - To include authentication, project and org name
 - Update the vss-extension.json - To include your publisher id, version and optionally -  name of extension, description 
 
-### Build and package the extensio
+### Build and package the extension
 
-1. First install node.js dependencies
+1. First install node.js dependencies of the project by running:
 
 ```npm install```
 
