@@ -1,0 +1,11 @@
+steps: 
+- task: SnykSecurityScan@0
+  displayName: 'Decorator injected snyk plugin'
+  inputs:
+    serviceConnectionEndpoint: 'Snyk pipeline connection'
+    testType: 'app'
+    severityThreshold: 'low'
+    failOnIssues: false 
+    # projectName: 'PROVIDE_PROJ_NAME_HARDCODED_OR_VARIABLE'
+    # organization: 'PROVIDE_ORG_NAME'
+    additionalArguments: '--all-projects'
