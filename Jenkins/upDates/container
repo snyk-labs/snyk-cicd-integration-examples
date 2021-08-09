@@ -1,0 +1,17 @@
+pipeline {
+    environment {
+        registry = "https://github.com/meytalmesh/goof"
+    }
+    agent any
+    stages {
+        stage('Building image') {
+          steps{
+            script {
+              docker.build registry + ":$BUILD_NUMBER"
+            }
+          }
+        }
+      }
+}
+
+snykSecurity additionalArguments: '--docker', failOnIssues: false, snykInstallation: 'snyk', snykTokenId: 'snyk-key'
