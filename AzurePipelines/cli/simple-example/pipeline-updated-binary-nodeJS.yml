@@ -1,0 +1,56 @@
+# Node.js with Vue
+# Build a Node.js project that uses Vue.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+  - master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.x'
+    displayName: 'Install Node.js'
+
+  - script: |
+      npm install
+      npm run build
+    displayName: 'npm install and build'
+
+  - script: |
+      curl -Lo ./snyk.exe "https://static.snyk.io/cli/latest/snyk-win.exe"
+      chmod +x snyk.exe
+      ls -la
+
+    displayName: 'Snyk install'
+
+  - script: |
+      curl -Lo ./snyk-to-html.exe "https://static.snyk.io/snyk-to-html/latest/snyk-to-html-win.exe"
+      chmod +x snyk-to-html.exe
+      ls -la
+    displayName: 'Snyk to html install'
+
+
+  # DO YOUR SCANNING HERE WITH SNYK
+  # create variable in Pipelines called 'SNYK_TOKEN' and securely save your Snyk token value
+  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables
+  - script: |
+      snyk.exe auth $(SNYK_TOKEN)
+      snyk.exe test --json | snyk-to-html.exe -o results.html
+      ls -la
+      cd
+
+    displayName: 'Snyk test'
+  # CELEBRATE
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)'
+      Contents: 'results.html'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+
+  - publish: $(System.DefaultWorkingDirectory)/results.html
+    artifact: results.html
