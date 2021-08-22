@@ -1,36 +1,48 @@
-# Node.js
-# Build a general Node.js project with npm.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-trigger:
-  - master
-pool:
-  vmImage: ubuntu-latest
-steps:
-  - task: NodeTool@0
-    inputs:
-      versionSpec: '10.x'
-    displayName: 'Install Node.js'
-  - script: |
-      npm install
-      npm run build
-    displayName: 'npm install and build'
-  - script: |
-      #install snyk
-      sudo npm install -g snyk
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-      #Install the Snyk JSON to HTML to get a report (optional)
-      sudo npm install snyk-to-html -g
+name: Java CI with Maven
 
-      #snyk authitipaction, if you don't have a variable define so copy and past your token
-      sudo snyk auth $(SNYK_TOKEN)
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
-      #run snyk test
-      sudo snyk test
+jobs:
+  build:
 
-      #if you want to monitor even if the build fail
-      sudo snyk monitor
+    runs-on: ubuntu-latest
 
-      #if there is a severity threshhold define as high
-      sudo snyk test --severity-threshold=high --snyk-to-html
-    displayName: 'snyktest'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+      - name: run MVN install
+        run: mvn install
+
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: npm install snyk -g
+      - run: snyk -v
+      - run: snyk auth ${{ secrets.snyk_token }}
+
+      - name: install snyk-to-html
+        run: |
+          npm install snyk-to-html -g
+          snyk test --json | snyk-to-html -o result.html
+          mkdir downloads
+          cp -v /home/runner/work/java-goof/java-goof/*.html /home/runner/work/java-goof/java-goof/downloads
+
+      - name: Use the Upload Artifact GitHub Action2
+        uses: actions/upload-artifact@v2
+        with:
+          name: results
+          path: downloads
