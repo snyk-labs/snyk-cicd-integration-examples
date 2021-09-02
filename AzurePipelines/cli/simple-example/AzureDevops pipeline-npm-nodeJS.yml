@@ -1,0 +1,44 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+  - master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.x'
+    displayName: 'Install Node.js'
+
+  - script: |
+      npm install
+      npm run build
+    displayName: 'npm install and build'
+
+  - script: |
+      sudo npm install -g snyk
+
+      sudo npm install snyk-to-html -g
+    displayName: 'snyk install'
+
+  - script: |
+      sudo snyk auth $(SNYK_TOKEN)
+      sudo snyk monitor
+      sudo snyk test --json | snyk-to-html -o results.html
+    displayName: 'snyk test'
+
+
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)'
+      Contents: 'results.html'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+
+  - publish: $(System.DefaultWorkingDirectory)/results.html
+    artifact: Results.html
