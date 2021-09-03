@@ -1,0 +1,40 @@
+pipeline {
+  agent any
+
+    stage('Initialize & Cleanup Workspace') {
+       echo 'Initialize & Cleanup Workspace'
+       sh 'ls -la'
+       sh 'rm -rf *'
+       sh 'rm -rf .git'
+       sh 'rm -rf .gitignore'
+       sh 'ls -la'
+    }
+
+    stage('Git Clone') {
+        git url: 'https://github.com/jonathan-gruber/goof.git'
+        sh 'ls -la'
+    }
+
+    stage('Test Build Requirements') {
+        sh 'cd goof/'
+        sh 'npm install -g'
+        sh 'npm -v'
+    }
+
+    stage('Test') {
+      steps {
+        echo 'Testing...'
+        snykSecurity(
+          snykInstallation: '<Your Snyk Installation Name>',
+          snykTokenId: '<Your Snyk API Token ID>',
+          // place other parameters here
+        )
+      }
+    }
+    stage('Deploy') {
+      steps {
+        echo 'Deploying...'
+      }
+    }
+  }
+}

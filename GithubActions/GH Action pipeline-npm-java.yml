@@ -1,0 +1,47 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  archive-build-artifacts:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+      - name: run MVN install
+        run: mvn install # install maven
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: npm install snyk -g # install snyk
+      - run: snyk -v
+      - run: snyk auth ${{ secrets.snyk_token }} # snyk authentication using GH secrets
+
+        # Generate the HTML report
+      - name: install snyk-to-html
+        run: |
+       # Install the Snyk JSON to HTML Mapper using npm
+               npm install snyk-to-html -g
+               # Convert JSON output from `snyk test --json` into a static HTML
+               snyk test --json | snyk-to-html -o result.html
+               mkdir downloads
+               cp -v /home/runner/work/java-goof/java-goof/*.html /home/runner/work/java-goof/java-goof/downloads
+
+      # save the HTML in the artifact
+      - name: Use the Upload Artifact GitHub Action
+        uses: actions/upload-artifact@v2
+        with:
+          name: results
+          path: downloads
