@@ -1,0 +1,24 @@
+version: '2.1'
+orbs:
+  snyk: snyk/snyk@1.1.1
+jobs:
+  build:
+    docker:
+    - image: 'circleci/buildpack-deps:stretch'
+    environment:
+      IMAGE_NAME: docker-goof
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: 'docker build -t $IMAGE_NAME:test .'
+          name: Build Docker image
+      - snyk/scan:
+          docker-image-name: '$IMAGE_NAME:test'
+          fail-on-issues: false
+          monitor-on-build: true
+          project: '${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}-container'
+          severity-threshold: high
+          target-file: Dockerfile
+          token-variable: SNYK_TOKEN
+workflows: null
