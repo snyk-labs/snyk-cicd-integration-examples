@@ -20,7 +20,7 @@ steps:
       - '-c'
       - |-
         snyk config set api=${_SNYK_TOKEN}
-        snyk iac test main.tf || true
+        snyk iac test <TERRAFORM FILE> || true
     id: Snyk IaC test
     entrypoint: bash
   - name: 'snyk/snyk-cli:npm'
@@ -28,7 +28,7 @@ steps:
       - '-c'
       - |-
         snyk config set api=${_SNYK_TOKEN}
-        snyk container test --severity-threshold=medium jiajunngjj/docker-goof:latest || true
+        snyk container test --severity-threshold=medium <CONTAINER_IMAGE> || true
     id: Snyk Container test
     entrypoint: bash
   - name: 'snyk/snyk-cli:npm'
