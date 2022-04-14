@@ -1,4 +1,4 @@
-image: node:10.15.3
+image: node:12.0.0
 
 pipelines:
   default:
@@ -9,12 +9,22 @@ pipelines:
         script:
           - npm install
           - npm install -g snyk
-          - npm install snyk-to-html -g #install snyk to html to see the report
-          - snyk test --json | snyk-to-html -o result.html #Vulnerability snapshot saved at result.html
-          - snyk container test node:14.1.0 --json | snyk-to-html -o result-container.html # provide the base image name to get base image vuln and remediation details;Vulnerability snapshot saved at result-container.html
-          - snyk iac test # fail build on IAC misconfigurations
+          # Install snyk to html to see the report
+          - npm install snyk-to-html -g 
+          # Autenticate with snyk's UI services account
+          - snyk auth $SNYK_TOKEN
+          # Vulnerability snapshot saved at result.html
+          - snyk test --json | snyk-to-html -o result.html
+          # Provide the base image name to get base image vuln and remediation details, vulnerability snapshot saved at result-container.html
+          - snyk container test node:14.1.0 --json | snyk-to-html -o result-container.html 
+          # vulnerability snapshot saved at result-code.html
+          - snyk code test --json | snyk-to-html -o result-code.html
+          # vulnerability snapshot saved at result-iac.html
+          - snyk iac test --json | snyk-to-html -o result-iac.html
         artifacts:
           download: true
           paths:
             - result.html
             - result-container.html
+            - result-code.html
+            - result-iac.html
