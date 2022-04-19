@@ -44,3 +44,32 @@ The `language/package manager` part can be renamed to `generic`, if no language 
 As the audience for these files are users new to Snyk, the contents of the file need to be concise & helpful. The top of the file should contain helpful links to the documentation of the CI/CD system itself and a note on what the filename in the end _should_ be. In the GH Actions example, the filename really should be `.github/workflows/snyk.yml`, for example.
 
 Refer to the below table for example values.
+
+| System                          | Type Of Installation | Language / Package Manager |
+| ------------------------------- | -------------------- | -------------------------- |
+| [AWS CodeBuild][aws-code-build] | npm install          | nodeJS                     |
+| [Azure Pipelines][az-pipelines] | manual               | maven                      |
+| [Bitbucket][bb-pipelines]       | plugin               | gradle                     |
+| [Concourse CI][concourse]       | docker               |                            |
+| [GitHub Actions][gh-actions]    |                      |                            |
+| [Jenkins][jenkins]              |                      |                            |
+| [Travis CI][travis]             |                      |                            |
+
+
+## Further reading
+
+- [Snyk CLI reference](https://docs.snyk.io/snyk-cli/cli-reference)
+- [Advanced CLI usage](./advanced-cli-use.md)
+
+## Contributing
+
+Contributors are welcome! Feel free to raise questions, feature requests or change sets in this Github Repository!
+
+
+[aws-code-build]: https://aws.amazon.com/codebuild/ 
+[az-pipelines]: https://azure.microsoft.com/en-gb/services/devops/pipelines/
+[bb-pipelines]: https://bitbucket.org/product/features/pipelines
+[concourse]: https://concourse-ci.org/
+[gh-actions]: https://github.com/features/actions
+[jenkins]: https://www.jenkins.io/
+[travis]: https://travis-ci.org/
