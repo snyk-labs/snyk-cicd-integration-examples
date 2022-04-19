@@ -65,6 +65,8 @@ Refer to the below table for example values.
 
 Contributors are welcome! Feel free to raise questions, feature requests or change sets in this Github Repository!
 
+To **test your changes**, fork the [Juice Shop][juice-shop] repository and add your changes there. It's a npm based JS repo with a Dockerfile & associated image plus IaC configuration (Kubernetes).
+
 
 [aws-code-build]: https://aws.amazon.com/codebuild/ 
 [az-pipelines]: https://azure.microsoft.com/en-gb/services/devops/pipelines/
@@ -72,4 +74,5 @@ Contributors are welcome! Feel free to raise questions, feature requests or chan
 [concourse]: https://concourse-ci.org/
 [gh-actions]: https://github.com/features/actions
 [jenkins]: https://www.jenkins.io/
+[juice-shop]: https://github.com/alexeisnyk/juice-shop
 [travis]: https://travis-ci.org/
