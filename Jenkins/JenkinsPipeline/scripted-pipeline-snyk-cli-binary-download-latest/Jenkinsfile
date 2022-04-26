@@ -2,8 +2,7 @@ node {
 
     // Not required if you install the Snyk CLI on your Agent
     stage('Download Latest Snyk CLI') {
-        latest_version = sh(script: 'curl -s https://api.github.com/repos/snyk/snyk/releases/latest | grep "tag_name"| cut -d : -f2', returnStdout: true).replaceAll('"','').replaceAll(',','')
-        latest_version = latest_version.trim()
+        latest_version = sh(script: 'curl -s https://api.github.com/repositories/45247496/releases/latest | grep "tag_name"| cut -d : -f2 | tr -cd "\.[:alnum:]\n"', returnStdout: true)
         echo "Latest Snyk CLI Version: ${latest_version}"
 
         snyk_cli_dl_linux="https://github.com/snyk/snyk/releases/download/${latest_version}/snyk-linux"
