@@ -9,7 +9,7 @@ There are typically 4 ways to deploy Snyk in a CI/CD pipeline:
 1. Installing the Snyk CLI binary 
 1. Installing the Snyk CLI container image
 
-The various ways are explained in details on the Snyk [support page](https://support.snyk.io/hc/en-us/articles/360018245398-Snyk-CI-CD-Integration-good-practices-).
+The various ways are explained in details on the Snyk [support page](https://docs.snyk.io/integrations/ci-cd-integrations).
 
 We are continuously trying to update this repo with useful templates.
 
