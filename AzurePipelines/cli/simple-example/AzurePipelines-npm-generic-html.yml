@@ -28,7 +28,7 @@ steps:
   - script: |
       snyk code test --sarif-file-output=results.sarif
       RESULT=$?
-      snyk-to-html -o html/results-code.html < results.sarif
+      snyk-to-html -o $(Build.ArtifactStagingDirectory)/results-code.html < results.sarif
       exit $RESULT
     continueOnError: true
     displayName: 'snyk code'
@@ -37,7 +37,7 @@ steps:
   - script: |
       snyk test --json-file-output=results.json
       RESULT=$?
-      snyk-to-html -o html/results-open-source.html < results.json
+      snyk-to-html -o $(Build.ArtifactStagingDirectory)/results-open-source.html < results.json
       exit $RESULT
     continueOnError: true
     displayName: 'snyk open source'
@@ -47,7 +47,7 @@ steps:
   - script: |
       snyk container test sebsnyk/juice-shop --file=Dockerfile --json-file-output=results.json
       RESULT=$?
-      snyk-to-html -o html/results-container.html < results.json
+      snyk-to-html -o $(Build.ArtifactStagingDirectory)/results-container.html < results.json
       exit $RESULT
     continueOnError: true
     displayName: 'snyk container'
@@ -56,7 +56,7 @@ steps:
   - script: |
       snyk iac test --json-file-output=results.json
       RESULT=$?
-      snyk-to-html -o html/results-iac.html < results.json
+      snyk-to-html -o $(Build.ArtifactStagingDirectory)/results-iac.html < results.json
       exit $RESULT
     continueOnError: true
     displayName: 'snyk iac'
@@ -64,23 +64,28 @@ steps:
   - task: PublishHtmlReport@1
     condition: succeededOrFailed()
     inputs:
-      reportDir: 'html/results-code.html'
+      reportDir: $(Build.ArtifactStagingDirectory)/results-code.html
       tabName: 'Snyk Code'
 
   - task: PublishHtmlReport@1
     condition: succeededOrFailed()
     inputs:
-      reportDir: 'html/results-open-source.html'
+      reportDir: $(Build.ArtifactStagingDirectory)/results-open-source.html
       tabName: 'Snyk Open Source'
 
   - task: PublishHtmlReport@1
     condition: succeededOrFailed()
     inputs:
-      reportDir: 'html/results-container.html'
+      reportDir: $(Build.ArtifactStagingDirectory)/results-container.html
       tabName: 'Snyk Container'
 
   - task: PublishHtmlReport@1
     condition: succeededOrFailed()
     inputs:
-      reportDir: 'html/results-iac.html'
+      reportDir: $(Build.ArtifactStagingDirectory)/results-iac.html
       tabName: 'Snyk IaC'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)'
+      artifactName: Snyk Reports
