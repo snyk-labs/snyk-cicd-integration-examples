@@ -6,7 +6,7 @@ Using this approach, Snyk can be enabled in a straightforward way.
 
 The [example](./Jenkinsfile-npm-install-generic.groovy) listed in this folder will activate all of Snyk's products and output to the Jenkins status pages using the warnings-ng plugin.
 
-Please follow the sample file links to install necessary plugins.
+The scripts may depend on various plugins. Please follow the information within the scripts to install them.
 
 ## Samples
 
