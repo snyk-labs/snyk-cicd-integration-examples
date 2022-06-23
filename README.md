@@ -47,10 +47,10 @@ Refer to the below table for example values.
 
 | System                          | Type Of Installation | Language / Package Manager |
 | ------------------------------- | -------------------- | -------------------------- |
-| [AWS CodeBuild][aws-code-build] | npm install          | nodeJS                     |
-| [Azure Pipelines][az-pipelines] | manual               | maven                      |
-| [Bitbucket][bb-pipelines]       | plugin               | gradle                     |
-| [Concourse CI][concourse]       | docker               |                            |
+| [AWS CodeBuild][aws-code-build] | npm install          | generic                    |
+| [Azure Pipelines][az-pipelines] | manual               | nodeJS                     |
+| [Bitbucket][bb-pipelines]       | plugin               | maven                      |
+| [Concourse CI][concourse]       | docker               | gradle                     |
 | [GitHub Actions][gh-actions]    |                      |                            |
 | [Jenkins][jenkins]              |                      |                            |
 | [Travis CI][travis]             |                      |                            |
