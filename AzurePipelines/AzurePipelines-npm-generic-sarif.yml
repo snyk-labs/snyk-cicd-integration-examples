@@ -26,7 +26,7 @@ steps:
     displayName: 'snyk code'
 
   # snyk open source
-  - script: snyk test --sarif-file-output=CodeAnalysisLogs/snyk-open-source.sarif
+  - script: snyk test --all-projects --sarif-file-output=CodeAnalysisLogs/snyk-open-source.sarif
     continueOnError: true
     displayName: 'snyk open source'
 
