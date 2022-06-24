@@ -1,0 +1,50 @@
+# Runs 2 Snyk Products (Open Source, Container)
+# Outputs the results to the pipeline
+
+# Prerequisites:
+# - Configure a `mySnykToken` service endpoint in your Azure Config.
+#   https://github.com/snyk-labs/snyk-cicd-integration-examples/tree/master/AzurePipelines contains a few instructions.
+# - Install the Snyk extension
+#   https://marketplace.visualstudio.com/items?itemName=Snyk.snyk-security-scan
+# - Install the SARIF viewer extension
+#   https://marketplace.visualstudio.com/items?itemName=sariftools.scans&targetId=bf3858e2-f2d0-4e06-962a-2107402a1234
+
+# NOTE: Change this to a different pool to run the scripts.
+pool: sebsnyk.pool 
+
+steps:
+  - checkout: self
+
+  # .. your instructions on building the app or preparing the repository
+
+  # snyk open source
+  - task: SnykSecurityScan@1
+    continueOnError: true
+    inputs:
+      serviceConnectionEndpoint: 'mySnykToken'
+      testType: 'app'
+      # This configures a pure local scan - results are not uploaded. 
+      # If this is desired, set `monitorWhen` to 'always' and remove the `--sarif-file-output` argument.
+      monitorWhen: 'never'
+      additionalArguments: '--all-projects --sarif-file-output=CodeAnalysisLogs/snyk-open-source.sarif'
+
+  # snyk container
+  # NOTE: Change this to your container name
+  - task: SnykSecurityScan@1
+    continueOnError: true
+    inputs:
+      serviceConnectionEndpoint: 'mySnykToken'
+      testType: 'container'
+      dockerImageName: 'sebsnyk/juice-shop'
+      dockerfilePath: 'Dockerfile'
+      # This configures a pure local scan - results are not uploaded. 
+      # If this is desired, set `monitorWhen` to 'always' and remove the `--sarif-file-output` argument.
+      monitorWhen: 'never'
+      additionalArguments: '--sarif-file-output=CodeAnalysisLogs/snyk-container.sarif'
+
+  - task: PublishBuildArtifacts@1
+    displayName: "Publish Artifact: CodeAnalysisLogs"
+    condition: succeededOrFailed()
+    inputs:
+      PathtoPublish: $(Build.SourcesDirectory)/CodeAnalysisLogs
+      ArtifactName: CodeAnalysisLogs
