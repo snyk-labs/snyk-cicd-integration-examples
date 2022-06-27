@@ -6,11 +6,22 @@
 
 // Please read the contents of this file carefully & ensure the URLs, tokens etc match your organisations needs.
 
+
+def snykCliBaseName(){
+    if (isUnix()) {
+        def uname = sh script: 'uname', returnStdout: true
+        if (uname.startsWith("Darwin")) {
+            return "snyk-macos"
+        } else {
+            return "snyk-linux"
+        }
+    } else {
+        return "snyk-win.exe"
+    }
+}
+
 pipeline {
     agent any
-
-    // Requires a configured NodeJS installation via https://plugins.jenkins.io/nodejs/
-    tools { nodejs "NodeJS 18.4.0" }
 
     stages {
         stage('git clone') {
@@ -19,12 +30,21 @@ pipeline {
             }
         }
 
-        // Install the Snyk CLI with npm. For more information, check:
+        // Install the Snyk CLI by downloading a binary. For more information, check:
         // https://docs.snyk.io/snyk-cli/install-the-snyk-cli
         stage('Install snyk CLI') {
             steps {
                 script {
-                    sh 'npm install -g snyk'
+                    def basename = snykCliBaseName()
+
+                    if (isUnix()) {
+                        sh("curl -O -s -L https://static.snyk.io/cli/latest/$basename")
+                        sh("curl -O -s -L https://static.snyk.io/cli/latest/${basename}.sha256")
+                        sh("shasum -c ${basename}.sha256")
+                        sh("chmod +x $basename && mv $basename ./snyk")
+                    } else {
+                        throw "Not implemented."
+                    }
                 }
             }
         }
@@ -33,7 +53,7 @@ pipeline {
         stage('Authorize Snyk CLI') {
             steps {
                 withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
-                    sh 'snyk auth ${SNYK_TOKEN}'
+                    sh './snyk auth ${SNYK_TOKEN}'
                 }
             }
         }
@@ -50,7 +70,7 @@ pipeline {
                 stage('Snyk Open Source') {
                     steps {
                         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                            sh 'snyk test --sarif-file-output=results-open-source.sarif'
+                            sh './snyk test --sarif-file-output=results-open-source.sarif'
                         }
                         recordIssues tool: sarif(name: 'Snyk Open Source', id: 'snyk-open-source', pattern: 'results-open-source.sarif')
                     }
@@ -58,7 +78,7 @@ pipeline {
                 stage('Snyk Code') {
                     steps {
                         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                            sh 'snyk code test --sarif-file-output=results-code.sarif'
+                            sh './snyk code test --sarif-file-output=results-code.sarif'
                         }
                         recordIssues  tool: sarif(name: 'Snyk Code', id: 'snyk-code', pattern: 'results-code.sarif')
                     }
@@ -66,7 +86,7 @@ pipeline {
                 stage('Snyk Container') {
                     steps {
                         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                            sh 'snyk container test sebsnyk/juice-shop --file=Dockerfile --sarif-file-output=results-container.sarif'
+                            sh './snyk container test sebsnyk/juice-shop --file=Dockerfile --sarif-file-output=results-container.sarif'
                         }
                         recordIssues tool: sarif(name: 'Snyk Container', id: 'snyk-container', pattern: 'results-container.sarif')
                     }
@@ -74,7 +94,7 @@ pipeline {
                 stage('Snyk IaC') {
                     steps {
                         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                            sh 'snyk iac test --sarif-file-output=results-iac.sarif'
+                            sh './snyk iac test --sarif-file-output=results-iac.sarif'
                         }
                         recordIssues tool: sarif(name: 'Snyk IaC', id: 'snyk-iac', pattern: 'results-iac.sarif')
                     }

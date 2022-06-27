@@ -4,7 +4,7 @@ Jenkins supports a declarative way to configure pipelines, using the https://www
 
 Using this approach, Snyk can be enabled in a straightforward way.
 
-The [example](./Jenkinsfile-npm-install-generic.groovy) listed in this folder will activate all of Snyk's products and output to the Jenkins status pages using the warnings-ng plugin.
+The [example](./Jenkinsfile-npm-install-generic.groovy) listed in this folder will activate all of Snyk's products and output to the Jenkins status pages using the warnings-ng plugin. The installation is based on `npm install`, for a directly download of Snyks CLI binaries, refer to [Jenkinsfile-manual-generic.groovy](Jenkinsfile-manual-generic.groovy).
 
 The scripts may depend on various plugins. Please follow the information within the scripts to install them.
 
