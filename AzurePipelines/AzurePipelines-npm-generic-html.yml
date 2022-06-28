@@ -17,7 +17,11 @@ steps:
   # install & prepare snyk
   - script: |
       npm install -g snyk snyk-to-html
-      mkdir html
+
+      # This OPTIONAL step will configure the Snyk CLI to connect to the EU instance of Snyk.
+      # snyk config set use-base64-encoding=true
+      # snyk config set endpoint=https://app.eu.snyk.io/api'
+
       snyk auth $(SNYK_TOKEN)
 
       # explicitly allow scripts to continue if errors occur
