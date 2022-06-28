@@ -1,0 +1,24 @@
+#  Templte NodeJS buiald
+#  This template allows you to validate your NodeJS code.
+#  The workflow allows running tests and code linting on the default branch.
+
+image: node:18
+
+pipelines:
+  default:
+    - step:
+        name: Build and Test
+        caches:
+          - node
+        script:
+          - npm install
+
+          - pipe: snyk/snyk-scan:0.5.2
+            variables:
+              SNYK_TOKEN: "$SNYK_TOKEN"
+              LANGUAGE: "npm"
+              DONT_BREAK_BUILD: "true"
+              MONITOR: "true"
+
+              # If you need to connect to the EU Instance, add --API=https://app.eu.snyk.io/api to EXTRA_ARGS
+              EXTRA_ARGS: "--all-projects"
