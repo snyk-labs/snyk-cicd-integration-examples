@@ -15,6 +15,7 @@ During the Github Actions-run, the results get pushed to Github Security.
 On an issue-card you can immediately review the issue:
 ![](gh-actions-pipeline-npm-nodejs-sarif_issue_card.png)
 
+The stages of the build can be tracked easily:
 ![](gh-actions-pipeline-npm-nodejs-sarif_build.png)
 
 See GH-actions-pipeline-npm-nodejs-sarif.yml for instructions how to get this output and build-workflow.
