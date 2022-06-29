@@ -2,11 +2,18 @@
 Using Snyk Effectively  on Github
 
 ## Using Snyk Actions
-
-
 All of these workflow use [Snyk Actions](https://github.com/snyk/actions) to execute the desired use cases.
 
 In order to use the Snyk Action, you will need to have a Snyk API token. You can sign up for a [free account](www.snyk.io/login) and save your [API token](https://github.com/snyk/actions#getting-your-snyk-token) as a secret in your Github repository.
+
+### Inline display of SARIF data
+Github supports the inline display of scan results ("Security" tab).
+
+![](gh-actions-pipeline-npm-nodejs-sarif.png)
+
+![](gh-actions-pipeline-npm-nodejs-sarif_build.png)
+
+See GH-actions-pipeline-npm-nodejs-sarif.yml for instructions how to get this output and build-workflow.
 
 ### Open Source Delta Check
 This workflow lets you block pipelines only if new vulnerabilities are introduced. It uses the [Snyk Delta](https://github.com/kriti-d/snyk-delta-check) tool to do the comparison with an already existing monitored projects to show results.
@@ -15,15 +22,13 @@ This workflow lets you block pipelines only if new vulnerabilities are introduce
 jobs:
   security:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [12.x]
+    
     steps:
       - uses: actions/checkout@master
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 18.4
       - name: Installing snyk-delta and dependencies
         run: npm i -g snyk-delta
       - uses: snyk/actions/setup@master
