@@ -15,10 +15,7 @@ During the Github Actions-run, the results get pushed to Github Security.
 On an issue-card you can immediately review the issue:
 ![](gh-actions-pipeline-npm-nodejs-sarif_issue_card.png)
 
-The stages of the build can be tracked easily:
-![](gh-actions-pipeline-npm-nodejs-sarif_build.png)
-
-See GH-actions-pipeline-npm-nodejs-sarif.yml for instructions how to get this output and build-workflow.
+See [GH-actions-pipeline-npm-nodejs-sarif.yml](GH-actions-pipeline-npm-nodejs-sarif.yml) for instructions how to get this output and build-workflow.
 
 ### Open Source Delta Check
 This workflow lets you block pipelines only if new vulnerabilities are introduced. It uses the [Snyk Delta](https://github.com/kriti-d/snyk-delta-check) tool to do the comparison with an already existing monitored projects to show results.
