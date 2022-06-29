@@ -29,7 +29,7 @@ jobs:
     - name: Snyk Open Source Scanning
       run: snyk test --org=${{ secrets.SNYK_ORG }} --all-projects --sarif-file-output=snyk-oss.sarif
       continue-on-error: true
-    - name: Upload result to GitHub Source Scanning Scanning
+    - name: Upload results to GitHub Open Source Scanning
       uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: snyk-oss.sarif
@@ -37,18 +37,18 @@ jobs:
     - name: Snyk Code Scanning
       run: snyk code test --org=${{ secrets.SNYK_ORG }} --sarif-file-output=snyk-code.sarif
       continue-on-error: true
-    - name: Upload result to GitHub Code Scanning
+    - name: Upload results to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: snyk-code.sarif
 
-    - name: Build the Docker image
+    - name: Build the Docker Image
       run: docker build . --file Dockerfile --tag sebsnyk/juice-shop:latest
 
     - name: Snyk Container Scanning
       run: snyk container test --org=${{ secrets.SNYK_ORG }} --file=Dockerfile --sarif-file-output=snyk-container.sarif sebsnyk/juice-shop:latest
       continue-on-error: true
-    - name: Upload result to GitHub Container Scanning
+    - name: Upload results to GitHub Container Scanning
       uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: snyk-container.sarif
@@ -56,7 +56,8 @@ jobs:
     - name: Snyk Infrastructure-as-Code Scanning
       run: snyk iac test --org=${{ secrets.SNYK_ORG }} --sarif-file-output=snyk-iac.sarif
       continue-on-error: true
-    - name: Upload result to GitHub IaC Scanning
+    - name: Upload results to GitHub IaC Scanning
       uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: snyk-iac.sarif
+        
