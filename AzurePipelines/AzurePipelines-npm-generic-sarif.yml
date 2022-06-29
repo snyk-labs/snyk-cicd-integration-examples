@@ -16,7 +16,7 @@ steps:
 
   # install & prepare snyk
   - script: |
-      npm install -g snyk
+      npm install --location=global snyk
 
       # This OPTIONAL step will configure the Snyk CLI to connect to the EU instance of Snyk.
       # snyk config set use-base64-encoding=true
