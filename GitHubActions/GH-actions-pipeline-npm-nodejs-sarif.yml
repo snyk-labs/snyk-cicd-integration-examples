@@ -6,7 +6,17 @@ name: Prebuilt repo + Snyk Security Scanning (OS, Code, Docker, IaC)
 # Outputs the results to the pipeline and in SARIF-format to the security tab
 
 # Prerequisites:
-# - Set a SNYK_TOKEN and a SNYK_ORG in the pipelines secrets
+# - Set a SNYK_TOKEN and a SNYK_ORG in the pipeline's secrets
+
+# - Define the events which trigger the workflow:
+on:
+  push:
+    branches:
+      - main
+      
+  pull_request:
+    branches:    
+      - main
 
 jobs:
   build:
