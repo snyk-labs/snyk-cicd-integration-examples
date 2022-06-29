@@ -29,6 +29,14 @@ pipeline {
             }
         }
 
+        // This OPTIONAL step will configure the Snyk CLI to connect to the EU instance of Snyk.
+        // stage('Configure Snyk for EU data center') {
+        //     steps {
+        //         sh 'snyk config set use-base64-encoding=true'
+        //         sh 'snyk config set endpoint=https://app.eu.snyk.io/api'
+        //     }
+        // }
+
         // Authorize the Snyk CLI
         stage('Authorize Snyk CLI') {
             steps {

@@ -1,0 +1,41 @@
+# Generic Bitbucket Pipeline example based on the snyk-scan pipe.
+#
+# https://docs.snyk.io/integrations/ci-cd-integrations/bitbucket-pipelines-integration-overview
+
+image: atlassian/default-image:3
+
+pipelines:
+  default:
+    # Building your app will require the passing of build artifacts from this step to the next.
+    - step:
+        name: Build
+        script:
+          - echo 'add your tasks here'
+
+    - step:
+        name: Snyk Open Source
+        script:
+          - pipe: snyk/snyk-scan:0.5.2
+            variables:
+              SNYK_TOKEN: "$SNYK_TOKEN_EU"
+              LANGUAGE: "npm" # Required unless SNYK_TEST_JSON_INPUT is set
+              DONT_BREAK_BUILD: "true"
+              MONITOR: "false"
+
+              # If you need to connect to the EU Instance, add --API=https://app.eu.snyk.io/api to EXTRA_ARGS
+              EXTRA_ARGS: "--all-projects"
+
+    - step:
+        name: Snyk Container
+        script:
+          - pipe: snyk/snyk-scan:0.5.2
+            variables:
+              SNYK_TOKEN: "$SNYK_TOKEN_EU"
+              LANGUAGE: "docker"   # Required unless SNYK_TEST_JSON_INPUT is set
+              DONT_BREAK_BUILD: "true"
+              MONITOR: "false"
+              IMAGE_NAME: "sebsnyk/juice-shop"
+              TARGET_FILE: "Dockerfile"
+
+              # If you need to connect to the EU Instance, add --API=https://app.eu.snyk.io/api to EXTRA_ARGS
+              EXTRA_ARGS: ""

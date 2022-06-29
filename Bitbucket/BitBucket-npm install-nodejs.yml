@@ -1,0 +1,41 @@
+# NodeJS Pipeline example based on the snyk-scan pipe.
+#
+# https://docs.snyk.io/integrations/ci-cd-integrations/bitbucket-pipelines-integration-overview
+
+image: node:18
+
+pipelines:
+  default:
+    - step:
+        name: Build & Scan
+        caches:
+          - node
+        script:
+          # Prepare Snyk
+          - npm install --location=global snyk snyk-to-html
+
+          # This OPTIONAL step will configure the Snyk CLI to connect to the EU instance of Snyk.
+          # - snyk config set use-base64-encoding=true
+          # - snyk config set endpoint=https://app.eu.snyk.io/api
+
+          # Authenticate Snyk
+          - snyk auth $SNYK_TOKEN
+
+          # Build the App
+          - npm install
+
+          # Vulnerability snapshot saved at result.html
+          - snyk test --json | snyk-to-html -o result.html
+          # Vulnerability snapshot saved at result-container.html
+          - snyk container test sebsnyk/juice-shop --file=Dockerfile --json | snyk-to-html -o result-container.html 
+          # vulnerability snapshot saved at result-code.html
+          - snyk code test --json | snyk-to-html -o result-code.html
+          # vulnerability snapshot saved at result-iac.html
+          - snyk iac test --json | snyk-to-html -o result-iac.html
+        artifacts:
+          download: true
+          paths:
+            - result.html
+            - result-container.html
+            - result-code.html
+            - result-iac.html
