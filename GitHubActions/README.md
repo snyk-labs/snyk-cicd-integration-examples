@@ -7,7 +7,8 @@ All of these workflow use [Snyk Actions](https://github.com/snyk/actions) to exe
 In order to use the Snyk Action, you will need to have a Snyk API token. You can sign up for a [free account](www.snyk.io/login) and save your [API token](https://github.com/snyk/actions#getting-your-snyk-token) as a secret in your Github repository.
 
 ### Inline display of SARIF data
-Github supports the inline display of scan results ("Security" tab).
+Github supports the inline display of scan results.
+During the Github Actions-run, the results get pushed to Github Security.
 
 ![](gh-actions-pipeline-npm-nodejs-sarif.png)
 
