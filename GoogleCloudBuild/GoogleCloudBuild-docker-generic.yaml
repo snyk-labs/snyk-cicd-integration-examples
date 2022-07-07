@@ -1,11 +1,11 @@
-# https://github.com/snyk/cli#snyk-cli-in-a-docker-image
+# You can find the Snyk Official CLI container images here: https://github.com/snyk/cli#snyk-cli-in-a-docker-image
 steps:
   - name: 'snyk/snyk-cli:npm'
     args:
       - '-c'
       - |-
         snyk config set api=${_SNYK_TOKEN}
-        snyk test --severity-threshold=medium || true
+        snyk test --json-file-output=results-open-source.html || true
     id: Snyk Open Source test
     entrypoint: bash
   - name: 'snyk/snyk-cli:npm'
@@ -13,7 +13,7 @@ steps:
       - '-c'
       - |-
         snyk config set api=${_SNYK_TOKEN}
-        snyk code test --severity-threshold=medium || true
+        snyk code test --sarif-file-output=results-code.html || true
     id: Snyk Code test
     entrypoint: bash
   - name: 'snyk/snyk-cli:npm'
@@ -21,7 +21,7 @@ steps:
       - '-c'
       - |-
         snyk config set api=${_SNYK_TOKEN}
-        snyk iac test <TERRAFORM FILE> || true
+        snyk iac test <TERRAFORM FILE> --json-file-output=results-iac.html || true
     id: Snyk IaC test
     entrypoint: bash
   - name: 'snyk/snyk-cli:npm'
@@ -29,20 +29,14 @@ steps:
       - '-c'
       - |-
         snyk config set api=${_SNYK_TOKEN}
-        snyk container test --severity-threshold=medium <CONTAINER_IMAGE> || true
+        snyk container test <CONTAINER_IMAGE> --json-file-output=results-container.html || true
     id: Snyk Container test
-    entrypoint: bash
-  - name: 'snyk/snyk-cli:npm'
-    args:
-      - '-c'
-      - |-
-        snyk config set api=${_SNYK_TOKEN}
-        snyk test --severity-threshold=medium --json | snyk-to-html -o
-        results.html || true
-    id: Create HTML artefact
     entrypoint: bash
 artifacts:
   objects:
     location: 'gs://<STORE_NAME>/scan_output'
     paths:
-      - results.html
+      - results-open-source.html
+      - results-code.html
+      - results-iac.html
+      - results-container.html
