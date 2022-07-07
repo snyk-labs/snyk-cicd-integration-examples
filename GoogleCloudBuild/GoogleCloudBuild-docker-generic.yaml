@@ -1,3 +1,4 @@
+# https://github.com/snyk/cli#snyk-cli-in-a-docker-image
 steps:
   - name: 'snyk/snyk-cli:npm'
     args:
