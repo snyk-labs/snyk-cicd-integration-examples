@@ -10,18 +10,6 @@ pipeline {
         nodejs 'nodeInstallationName' // Refers to a global tool configuration for nodejs called 'nodeInstallationName' 
     }
 
-    stages {
-        stage('Initialize & Cleanup Workspace') {
-            steps {
-               echo 'Initialize & Cleanup Workspace'
-               sh 'ls -la'
-               sh 'rm -rf *'
-               sh 'rm -rf .git'
-               sh 'rm -rf .gitignore'
-               sh 'ls -la'
-            }
-        }
-
         stage('Git Clone') {
             steps {
                 // Clone the repo that is going to be built
