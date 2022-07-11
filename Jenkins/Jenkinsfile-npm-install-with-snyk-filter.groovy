@@ -9,7 +9,7 @@ pipeline {
     tools {
         nodejs 'nodeInstallationName' // Refers to a global tool configuration for nodejs called 'nodeInstallationName' 
     }
-
+    stages {
         stage('Git Clone') {
             steps {
                 // Clone the repo that is going to be built
