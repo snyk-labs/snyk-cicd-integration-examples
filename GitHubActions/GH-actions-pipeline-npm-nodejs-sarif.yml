@@ -8,6 +8,8 @@ name: Prebuilt repo + Snyk Security Scanning (OS, Code, Docker, IaC)
 # Prerequisites:
 # - Set a SNYK_TOKEN and a SNYK_ORG in the pipelines secrets
 
+on: [push, pull_request]
+
 jobs:
   build:
     runs-on: ubuntu-latest
