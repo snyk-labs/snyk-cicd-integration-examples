@@ -1,4 +1,5 @@
-# You can find the Snyk Official CLI container images here: https://github.com/snyk/cli#snyk-cli-in-a-docker-image
+# You can find the Snyk official CLI container images here: https://github.com/snyk/cli#snyk-cli-in-a-docker-image
+# Snyk CLI container is running at each step to trigger the Snyk scan. The example below uses the snyk/snyk-cli:npm container image
 steps:
   - name: 'snyk/snyk-cli:npm'
     args:
