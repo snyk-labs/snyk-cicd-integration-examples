@@ -5,7 +5,10 @@ steps:
       - '-c'
       - |-
         snyk config set api=${_SNYK_TOKEN}
-        snyk test --json-file-output=results-open-source.html || true
+        snyk test --all-projects --json-file-output=results.json
+        RESULT=$?
+        snyk-to-html -o results-open-source.html < results.json
+        exit 0
     id: Snyk Open Source test
     entrypoint: bash
   - name: 'snyk/snyk-cli:npm'
@@ -13,7 +16,10 @@ steps:
       - '-c'
       - |-
         snyk config set api=${_SNYK_TOKEN}
-        snyk code test --sarif-file-output=results-code.html || true
+        snyk code test --sarif-file-output=results.sarif
+        RESULT=$?
+        snyk-to-html -o results-code.html < results.sarif
+        exit 0
     id: Snyk Code test
     entrypoint: bash
   - name: 'snyk/snyk-cli:npm'
@@ -21,7 +27,10 @@ steps:
       - '-c'
       - |-
         snyk config set api=${_SNYK_TOKEN}
-        snyk iac test <TERRAFORM FILE> --json-file-output=results-iac.html || true
+        snyk iac test --json-file-output=results.json
+        RESULT=$?
+        snyk-to-html -o results-iac.html < results.json
+        exit 0 
     id: Snyk IaC test
     entrypoint: bash
   - name: 'snyk/snyk-cli:npm'
@@ -29,12 +38,15 @@ steps:
       - '-c'
       - |-
         snyk config set api=${_SNYK_TOKEN}
-        snyk container test <CONTAINER_IMAGE> --json-file-output=results-container.html || true
+        snyk container test jiajunngjj/docker-goof --file=Dockerfile --json-file-output=results.json
+        RESULT=$?
+        snyk-to-html -o results-container.html < results.json
+        exit 0 
     id: Snyk Container test
     entrypoint: bash
 artifacts:
-  objects:
-    location: 'gs://<STORE_NAME>/scan_output'
+  objects:     
+    location: 'gs://${_STORE_NAME}' #Create a Google Cloud Storage to store your report artifacts
     paths:
       - results-open-source.html
       - results-code.html
