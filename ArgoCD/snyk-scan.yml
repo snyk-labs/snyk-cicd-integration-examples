@@ -14,7 +14,7 @@ spec:
         image: snyk/snyk-cli:npm
         command: ["/bin/sh","-c"]
         args:
-          - git clone https://github.com/jiajunngjj/argocd-goof.git
+          - git clone https://github.com/jiajunngjj/argocd-goof.git # Clone your own repo to run scan on your k8s deployment yaml
           - snyk auth $SNYK_TOKEN
           - snyk iac test argocd-goof/goof/goof-deployment.yaml --severity-threshold=high # any detection of vuln with severity high and above would fail the synchronization
         env:
