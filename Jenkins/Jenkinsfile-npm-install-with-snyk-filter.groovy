@@ -12,21 +12,20 @@ pipeline {
     stages {
         stage('Git Clone') {
             steps {
-                git url: 'https://github.com/snyk-labs/nodejs-goof'
-                sh 'ls -la'
+                git url: 'https://github.com/snyk-labs/nodejs-goof' 
             }
         }
 
+        stage('Install Snyk-Filter') {
+            steps {
+                // snyk-filter requires node-jq and snyk-filter to be installed
+                sh 'npm install -g node-jq snyk-filter'
+            }
+        }
+        
         stage('Build') {
             steps {
-                // Install dependencies and run the build.
-                // snyk-filter requires node-jq and snyk-filter to be installed
-                sh 'npm install -g node-jq'
-                sh 'npm install -g snyk-filter'
-                // browserify is a dependency for the repo being built
-                sh 'npm install browserify'
-                // this is the node command for starting the build
-                sh 'npm run build'
+                // Add your build instructions in this stage
             }
         }
 
