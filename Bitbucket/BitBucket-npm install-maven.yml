@@ -13,7 +13,7 @@ pipelines:
 
           # This OPTIONAL step will configure the Snyk CLI to connect to the EU instance of Snyk.
           # - snyk config set use-base64-encoding=true
-          # - snyk config set endpoint=https://app.eu.snyk.io/api
+          # - snyk config set endpoint='https://app.eu.snyk.io/api'
 
           # Authenticate Snyk
           - snyk auth $SNYK_TOKEN
