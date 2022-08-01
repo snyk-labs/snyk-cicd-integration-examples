@@ -33,7 +33,7 @@ pipeline {
         // stage('Configure Snyk for EU data center') {
         //     steps {
         //         sh 'snyk config set use-base64-encoding=true'
-        //         sh 'snyk config set endpoint=https://app.eu.snyk.io/api'
+        //         sh 'snyk config set endpoint='https://app.eu.snyk.io/api'
         //     }
         // }
 
