@@ -10,7 +10,7 @@ The scripts may depend on various plugins. Please follow the information within 
 
 ## Using snyk-filter with Jenkins
 
-The [example with snyk-filter](./Jenkinsfile-npm-install-with-snyk-filter.groovy) in this folder will scan using Snyk's open source product and outputs the results as a json file. It will then run [snyk-filter](https://github.com/snyk-tech-services/snyk-filter) which accepts that json file and the location to the [filter](./exploitable_cvss_9.yml)filter as inputs. 
+The [example with snyk-filter](./Jenkinsfile-npm-install-with-snyk-filter.groovy) in this folder will scan using Snyk's open source product and outputs the results as a json file. It will then run [snyk-filter](https://github.com/snyk-tech-services/snyk-filter) which accepts that json file and the location to the [filter](./exploitable_cvss_9.yml) as inputs. 
 
 ### Example of filter
 
