@@ -19,7 +19,7 @@ pipeline {
         stage('Install Snyk-Filter') {
             steps {
                 // snyk-filter requires node-jq and snyk-filter to be installed
-                sh 'npm install -g node-jq snyk-filter'
+                sh 'npm install --location=global node-jq snyk-filter'
             }
         }
         
