@@ -40,7 +40,7 @@ pipeline {
                     failOnIssues: 'false', // if the build fails in the snykSecurity step, snyk-filter will not run, which is why failOnIssues is set to false.
                     additionalArguments: '--json-file-output=all-vulnerabilities.json'
                 )
-                sh 'snyk-filter -i vuln.json -f snyk-filter/exploitable_cvss_9.yml'
+                sh 'snyk-filter -i all-vulnerabilities.json -f snyk-filter/exploitable_cvss_9.yml'
             }
         }
     }
