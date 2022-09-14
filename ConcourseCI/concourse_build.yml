@@ -18,7 +18,7 @@ jobs:
             type: registry-image
             source: { repository: node, tag: "8" }
           params:
-            SNYK_TOKEN: ((snyk-token)
+            SNYK_TOKEN: ((snyk-token))
           inputs:
             - name: goof
           run:
