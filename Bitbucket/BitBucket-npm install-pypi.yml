@@ -1,0 +1,39 @@
+image: python:3.10
+
+pipelines:
+  default:
+    - step:
+        name: Build & Scan
+
+        script:
+          # Prepare Snyk
+          - curl -sL https://deb.nodesource.com/setup_18.x | bash -
+          - apt-get -y upgrade && apt-get -y install nodejs
+          - npm install --location=global snyk snyk-to-html
+
+          # This OPTIONAL step will configure the Snyk CLI to connect to the EU instance of Snyk.
+          # - snyk config set use-base64-encoding=true
+          # - snyk config set endpoint=https://app.eu.snyk.io/api
+
+          # Authenticate Snyk
+          - snyk auth $SNYK_TOKEN
+
+          # Build the App
+          - pip install pypi-install
+
+          # Vulnerability snapshot saved at results-opensource.html
+          - snyk test --json | snyk-to-html -o results-opensource.html
+          # Vulnerability snapshot saved at results-container.html
+          - snyk container test mcsnyk/juice-shop --file=Dockerfile --json | snyk-to-html -o results-container.html 
+          # vulnerability snapshot saved at results-code.html
+          - snyk code test --json | snyk-to-html -o results-code.html
+          # vulnerability snapshot saved at results-iac.html
+          - snyk iac test --json | snyk-to-html -o results-iac.html
+        artifacts:
+          download: true
+          paths:
+            - results-opensource.html
+            - results-container.html
+            - results-code.html
+            - results-iac.html
+            
