@@ -16,9 +16,9 @@ jobs:
           platform: linux
           image_resource:
             type: registry-image
-            source: { repository: node, tag: "8" }
+            source: { repository: node, tag: "12" }
           params:
-            SNYK_TOKEN: ((snyk-token)
+            SNYK_TOKEN: ((snyk-token))
           inputs:
             - name: goof
           run:
@@ -31,4 +31,5 @@ jobs:
                 cd goof
                 npm install
                 npm install -g snyk
-                snyk test
+                snyk test #|| true
+                snyk monitor
