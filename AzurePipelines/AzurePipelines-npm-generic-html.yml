@@ -7,7 +7,7 @@
 #   https://marketplace.visualstudio.com/items?itemName=JakubRumpca.azure-pipelines-html-report
 
 # NOTE: Change this to a different pool to run the scripts.
-pool: sebsnyk.pool 
+pool: sebsnyk.pool
 
 steps:
   - checkout: self
@@ -26,25 +26,33 @@ steps:
 
       # explicitly allow scripts to continue if errors occur
       set +e
-    displayName: 'snyk install & auth'
+    displayName: "snyk install & auth"
 
   # snyk code
   - script: |
       snyk code test --sarif-file-output=results.sarif
       RESULT=$?
       snyk-to-html -o $(Build.ArtifactStagingDirectory)/results-code.html < results.sarif
+
+      # Optionally, you could also leverage other or rather your own custom remplates for the HTML generation
+      # snyk-to-html -t $(npm config get prefix)/lib/node_modules/snyk-to-html/template/code/test-report.hbs -i results.sarif -o $(Build.ArtifactStagingDirectory)/results-code.html < results.sarif
+
       exit $RESULT
     continueOnError: true
-    displayName: 'snyk code'
+    displayName: "snyk code"
 
   # snyk open source
   - script: |
       snyk test --all-projects --json-file-output=results.json
       RESULT=$?
       snyk-to-html -o $(Build.ArtifactStagingDirectory)/results-open-source.html < results.json
+
+      # Optionally, you could also leverage other or rather your own custom remplates for the HTML generation
+      # snyk-to-html -t $(npm config get prefix)/lib/node_modules/snyk-to-html/template/test-cve-report.hbs -o $(Build.ArtifactStagingDirectory)/results-open-source.html < results.json
+
       exit $RESULT
     continueOnError: true
-    displayName: 'snyk open source'
+    displayName: "snyk open source"
 
   # snyk container
   # NOTE: Change the image name
@@ -54,7 +62,7 @@ steps:
       snyk-to-html -o $(Build.ArtifactStagingDirectory)/results-container.html < results.json
       exit $RESULT
     continueOnError: true
-    displayName: 'snyk container'
+    displayName: "snyk container"
 
   # snyk iac
   - script: |
@@ -63,33 +71,33 @@ steps:
       snyk-to-html -o $(Build.ArtifactStagingDirectory)/results-iac.html < results.json
       exit $RESULT
     continueOnError: true
-    displayName: 'snyk iac'
+    displayName: "snyk iac"
 
   - task: PublishHtmlReport@1
     condition: succeededOrFailed()
     inputs:
       reportDir: $(Build.ArtifactStagingDirectory)/results-code.html
-      tabName: 'Snyk Code'
+      tabName: "Snyk Code"
 
   - task: PublishHtmlReport@1
     condition: succeededOrFailed()
     inputs:
       reportDir: $(Build.ArtifactStagingDirectory)/results-open-source.html
-      tabName: 'Snyk Open Source'
+      tabName: "Snyk Open Source"
 
   - task: PublishHtmlReport@1
     condition: succeededOrFailed()
     inputs:
       reportDir: $(Build.ArtifactStagingDirectory)/results-container.html
-      tabName: 'Snyk Container'
+      tabName: "Snyk Container"
 
   - task: PublishHtmlReport@1
     condition: succeededOrFailed()
     inputs:
       reportDir: $(Build.ArtifactStagingDirectory)/results-iac.html
-      tabName: 'Snyk IaC'
+      tabName: "Snyk IaC"
 
   - task: PublishBuildArtifacts@1
     inputs:
-      pathToPublish: '$(Build.ArtifactStagingDirectory)'
+      pathToPublish: "$(Build.ArtifactStagingDirectory)"
       artifactName: Snyk Reports
