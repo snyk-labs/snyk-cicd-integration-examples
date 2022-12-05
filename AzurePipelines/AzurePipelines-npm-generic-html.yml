@@ -34,7 +34,7 @@ steps:
       RESULT=$?
       snyk-to-html -o $(Build.ArtifactStagingDirectory)/results-code.html < results.sarif
 
-      # Optionally, you could also leverage other or rather your own custom remplates for the HTML generation
+      # Optionally, you could also leverage other or rather your own custom templates for the HTML generation
       # snyk-to-html -t $(npm config get prefix)/lib/node_modules/snyk-to-html/template/code/test-report.hbs -i results.sarif -o $(Build.ArtifactStagingDirectory)/results-code.html < results.sarif
 
       exit $RESULT
@@ -47,7 +47,7 @@ steps:
       RESULT=$?
       snyk-to-html -o $(Build.ArtifactStagingDirectory)/results-open-source.html < results.json
 
-      # Optionally, you could also leverage other or rather your own custom remplates for the HTML generation
+      # Optionally, you could also leverage other or rather your own custom templates for the HTML generation
       # snyk-to-html -t $(npm config get prefix)/lib/node_modules/snyk-to-html/template/test-cve-report.hbs -o $(Build.ArtifactStagingDirectory)/results-open-source.html < results.json
 
       exit $RESULT
