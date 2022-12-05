@@ -22,6 +22,8 @@ The HTML reports are also available for download directly from the pipeline page
 
 See [AzurePipelines-npm-generic-html.yml](AzurePipelines-npm-generic-html.yml) for instructions how to get this output.
 
+`snyk-to-html` also supports the usage of custom templates. Some of the [standard templates](https://github.com/snyk/snyk-to-html/tree/master/template) are already bundled into this tool. However, you can also create your own custom templates. If using a custom template, snyk-to-html expects the template to be installed in the package's templates folder, regardless of any path specified in the `-t` argument. By default, this folder resides at `{npm_prefix}/lib/node_modules/snyk-to-html/template`.
+
 [sarif-viewer-plugin]: https://marketplace.visualstudio.com/items?itemName=sariftools.scans&targetId=bf3858e2-f2d0-4e06-962a-2107402a1234
 [html-viewer-plugin]: https://marketplace.visualstudio.com/items?itemName=JakubRumpca.azure-pipelines-html-report
 
