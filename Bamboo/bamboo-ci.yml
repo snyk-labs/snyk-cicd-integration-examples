@@ -1,0 +1,9 @@
+# Configure SNYK_TOKEN environment variable in your Bamboo project settings
+
+npm install snyk -g
+export SNYK_TOKEN=${bamboo.SNYK_SECRET}
+snyk test  --all-projects || true  
+snyk monitor --all-projects || true
+
+exit 0
+
