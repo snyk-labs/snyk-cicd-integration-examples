@@ -42,7 +42,7 @@ jobs:
       - name: Execute unit tests
         run: dotnet test
 
-      - name: Execute unit tests
+      - name: Restore dependencies as well as project-specific tools
         run: dotnet restore
 
       - name: Install & configure Snyk
@@ -50,6 +50,7 @@ jobs:
           curl "https://static.snyk.io/cli/latest/snyk-win.exe" -o snyk.exe
           .\snyk.exe -v
           .\snyk auth ${{secrets.SNYK_TOKEN}}
+
       - name: Run Snyk Open Source (SCA)
         run: |
           .\snyk.exe test
