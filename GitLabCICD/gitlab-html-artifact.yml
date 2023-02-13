@@ -1,0 +1,21 @@
+image: node:latest
+
+cache:
+  paths:
+    - node_modules/
+
+install:
+  script:
+    - npm install
+
+snyk:
+  script:
+    - npm install -g snyk
+    - npm install -g snyk-to-html
+    - snyk auth $SNYK_TOKEN
+    - snyk code test --json > results.json || true
+    - snyk-to-html -i results.json -o results.html
+  artifacts:
+    paths:
+      - results.html
+    expire_in: 1 week
