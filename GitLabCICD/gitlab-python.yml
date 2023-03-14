@@ -30,7 +30,7 @@ dependency_scanning:
   script:
     # Setting up node in a python environment
     - curl -sL https://deb.nodesource.com/setup_10.x | bash -
-    - apt-get install nodejs
+    - apt-get install nodejs -y
     # Install Snyk and snyk-to-html
     - npm install -g snyk
     # Run snyk auth, snyk monitor, snyk test to break build and output report
