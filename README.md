@@ -10,6 +10,10 @@ There are typically 4 ways to deploy Snyk in a CI/CD pipeline:
 1. Installing the Snyk CLI container image
 
 The various ways are explained in details on the Snyk [support page](https://docs.snyk.io/integrations/ci-cd-integrations).
+Note, you change `snyk test` to any of the following:
+- `snyk code test` to test your source code
+- `snyk container test` to test your container
+- `snyk iac test` to test your infrastructure as code files
 
 We are continuously trying to update this repo with useful templates.
 
