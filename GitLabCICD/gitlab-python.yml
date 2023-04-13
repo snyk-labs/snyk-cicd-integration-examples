@@ -35,5 +35,5 @@ dependency_scanning:
     - npm install -g snyk
     # Run snyk auth, snyk monitor, snyk test to break build and output report
     - snyk auth $SNYK_TOKEN
-    - snyk monitor --project-name=python-goof_GitLab_CI/CD
+    - snyk monitor --project-name=$CI_PROJECT_NAME
     - snyk test
