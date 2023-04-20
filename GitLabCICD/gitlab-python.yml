@@ -30,10 +30,10 @@ dependency_scanning:
   script:
     # Setting up node in a python environment
     - curl -sL https://deb.nodesource.com/setup_10.x | bash -
-    - apt-get install nodejs
+    - apt-get install nodejs npm -y
     # Install Snyk and snyk-to-html
     - npm install -g snyk
     # Run snyk auth, snyk monitor, snyk test to break build and output report
     - snyk auth $SNYK_TOKEN
-    - snyk monitor --project-name=python-goof_GitLab_CI/CD
+    - snyk monitor --project-name=$CI_PROJECT_NAME
     - snyk test

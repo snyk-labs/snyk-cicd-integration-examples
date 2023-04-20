@@ -25,8 +25,12 @@ steps:
       testType: 'app'
       # This configures a pure local scan - results are not uploaded. 
       # If this is desired, set `monitorWhen` to 'always' and remove the `--sarif-file-output` argument.
+      
+      # This OPTIONAL step will configure the Snyk CLI to connect to the EU or AU instance of Snyk.
+      # Docs: https://docs.snyk.io/more-info/data-residency-at-snyk#cli-and-ci-pipelines-urls
 
       # If you need to connect to the EU Instance, add --API=https://app.eu.snyk.io/api to additionalArguments
+      # If you need to connect to the AU Instance, add --API=https://app.au.snyk.io/api to additionalArguments
       
       monitorWhen: 'never'
       additionalArguments: '--all-projects --sarif-file-output=CodeAnalysisLogs/snyk-open-source.sarif'
