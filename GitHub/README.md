@@ -18,7 +18,7 @@ On an issue-card you can immediately review the issue:
 See [GH-actions-pipeline-npm-nodejs-sarif.yml](GH-actions-pipeline-npm-nodejs-sarif.yml) for instructions how to get this output and build-workflow.
 
 ### Open Source Delta Check
-This workflow lets you block pipelines only if new vulnerabilities are introduced. It uses the [Snyk Delta](https://github.com/kriti-d/snyk-delta-check) tool to do the comparison with an already existing monitored projects to show results.
+This workflow lets you block pipelines only if new vulnerabilities are introduced. It uses the [Snyk Delta](https://github.com/snyk-tech-services/snyk-delta) tool to do the comparison with an already existing monitored projects to show results.
 
 ```bash
 jobs:
