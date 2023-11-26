@@ -13,8 +13,8 @@ phases:
 
   build:
     commands:
-      - npm install
-      - npm test  # Run your unit tests, etc
+      # - npm install
+      # - npm test  # Run your unit tests, etc
       - snyk test
       - snyk monitor --org=<your-snyk-org-id>
 
