@@ -1,0 +1,55 @@
+# You can find the Snyk official CLI container images here: https://github.com/snyk/cli#snyk-cli-in-a-docker-image
+# Snyk CLI container is running at each step to trigger the Snyk scan. The example below uses the snyk/snyk-cli:npm container image
+steps:
+  - name: 'snyk/snyk-cli:npm'
+    args:
+      - '-c'
+      - |-
+        snyk config set api=${_SNYK_TOKEN}
+        snyk test --all-projects --json-file-output=results.json
+        RESULT=$?
+        snyk-to-html -o results-open-source.html < results.json
+        exit 0
+    id: Snyk Open Source test
+    entrypoint: bash
+  - name: 'snyk/snyk-cli:npm'
+    args:
+      - '-c'
+      - |-
+        snyk config set api=${_SNYK_TOKEN}
+        snyk code test --sarif-file-output=results.sarif
+        RESULT=$?
+        snyk-to-html -o results-code.html < results.sarif
+        exit 0
+    id: Snyk Code test
+    entrypoint: bash
+  - name: 'snyk/snyk-cli:npm'
+    args:
+      - '-c'
+      - |-
+        snyk config set api=${_SNYK_TOKEN}
+        snyk iac test --json-file-output=results.json
+        RESULT=$?
+        snyk-to-html -o results-iac.html < results.json
+        exit 0 
+    id: Snyk IaC test
+    entrypoint: bash
+  - name: 'snyk/snyk-cli:npm'
+    args:
+      - '-c'
+      - |-
+        snyk config set api=${_SNYK_TOKEN}
+        snyk container test jiajunngjj/docker-goof --file=Dockerfile --json-file-output=results.json
+        RESULT=$?
+        snyk-to-html -o results-container.html < results.json
+        exit 0 
+    id: Snyk Container test
+    entrypoint: bash
+artifacts:
+  objects:     
+    location: 'gs://${_STORE_NAME}' #Create a Google Cloud Storage to store your report artifacts
+    paths:
+      - results-open-source.html
+      - results-code.html
+      - results-iac.html
+      - results-container.html
