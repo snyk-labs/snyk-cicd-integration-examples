@@ -1,0 +1,19 @@
+version: 2.1
+orbs: 
+  snyk: snyk/snyk@1.1.2
+
+jobs:
+  snyk-scan:
+    docker:
+      - image: cimg/openjdk:11.0
+    steps:
+      - checkout
+      - run: mvn install
+      - snyk/scan:
+          command: monitor
+          monitor-on-build: false
+
+workflows:
+  build-test-snyk:
+    jobs:
+      - snyk-scan
