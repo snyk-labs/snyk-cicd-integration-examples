@@ -9,30 +9,27 @@ env:
 phases:
   install:
     commands:
-      # Use this if you just want to use a fixed version:
-#      - curl -Lo ./snyk "https://github.com/snyk/snyk/releases/download/v1.136.3/snyk-linux"
-
-      # Use this to always get the latest version:
-      - latest_version=$(curl -Is "https://github.com/snyk/snyk/releases/latest" | grep "^location" | sed 's#.*tag/##g' | tr -d "\r")
-      - snyk_cli_dl_linux="https://github.com/snyk/snyk/releases/download/${latest_version}/snyk-linux"
+      # the following commands download and activate a x86 binary
+      # please ensure to use a build environment image like the following:
+      #   aws/codebuild/amazonlinux2-x86_64-standard:4.0
+      - latest_version=$(curl -Is "https://github.com/snyk/cli/releases/latest" | grep "^location" | sed 's#.*tag/##g' | tr -d "\r")
+      - snyk_cli_dl_linux="https://github.com/snyk/cli/releases/download/${latest_version}/snyk-linux"
       - curl -Lo ./snyk $snyk_cli_dl_linux
+      - chmod +x ./snyk
 
-      - chmod -R +x ./snyk
+      - latest_version=$(curl -Is "https://github.com/snyk/snyk-to-html/releases/latest" | grep "^location" | sed 's#.*tag/##g' | tr -d "\r")
+      - snyk_to_html_cli_dl_linux="https://github.com/snyk/snyk-to-html/releases/download/${latest_version}/snyk-to-html-linux"
+      - curl -Lo ./snyk-to-html $snyk_to_html_cli_dl_linux
+      - chmod +x ./snyk-to-html
 
   build:
     commands:
-      - npm install
-      - npm test  # Run your unit tests, etc
-      - ./snyk test
-      - ./snyk monitor --org=<your-snyk-org-id>
+      # - npm install
+      # - npm test  # Run your unit tests, etc
+      - ./snyk test --json | ./snyk-to-html -o results-snyk-open-source.html
 
-#artifacts:
-#files:
-# - location
-# - location
-#name: $(date +%Y-%m-%d)
-#discard-paths: yes
-#base-directory: location
-#cache:
-#paths:
-# - paths
+
+artifacts:
+  files:
+    - 'results*.html'
+  name: snyk-$(date +%Y-%m-%d) 
