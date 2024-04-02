@@ -1,8 +1,26 @@
-image: gradle:7.4.2-jdk11
-
+# test-snyk only runs test & monitor commands on Snyk.
 test-snyk:
+  image:
+    # Utilise a standard CLI docker images published by Snyk. 
+    # For the full list, see https://github.com/snyk/snyk-images
+    name: snyk/snyk:gradle-6.4-jdk11
+    entrypoint: [ "" ]
   script:
-    - curl https://static.snyk.io/cli/latest/snyk-linux -o snyk
-    - chmod +x ./snyk
-    - ./snyk auth $SNYK_TOKEN
-    - ./snyk monitor --all-sub-projects --remote-repo-url="$CI_PROJECT_ROOT_NAMESPACE/$CI_PROJECT_TITLE"
+    - snyk test --all-projects
+    - snyk monitor --all-projects
+
+# The following section demonstrates the creation of a HTML artifact. 
+# It requires snyk-to-html, a tool currently only distributed via NPM.
+test-snyk-generate-html-report:
+  image:
+    # Utilise a standard CLI docker images published by Snyk. 
+    # For the full list, see https://github.com/snyk/snyk-images
+    name: snyk/snyk:gradle-6.4-jdk11
+    entrypoint: [ "" ]
+  script:
+    - curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+    - apt-get update && apt-get install -y nodejs && npm install -g snyk-to-html
+    - snyk test --all-projects --json | snyk-to-html -o results.html
+  artifacts:
+    paths: [ "results.html" ]
+    when: always

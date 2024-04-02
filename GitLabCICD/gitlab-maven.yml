@@ -1,16 +1,26 @@
-
-image: maven:3-jdk-11
-build:
-  stage: build
+# test-snyk only runs test & monitor commands on Snyk.
+test-snyk:
+  image:
+    # Utilise a standard CLI docker images published by Snyk. 
+    # For the full list, see https://github.com/snyk/snyk-images
+    name: snyk/snyk:maven-3-jdk-20
+    entrypoint: [ "" ]
   script:
-    - mvn install
-    - curl -sL https://deb.nodesource.com/setup_10.x | bash -
-    - apt-get -y upgrade
-    - apt-get -y install nodejs
-    - apt-get -y install npm
-    - npm install -g snyk
-    - npm install snyk-to-html -g
-    - snyk test
-    - snyk auth $SNYK_TOKEN
-    - snyk test --json | snyk-to-html -o snyk_results.html
+    - snyk test --all-projects
+    - snyk monitor --all-projects
 
+# The following section demonstrates the creation of a HTML artifact. 
+# It requires snyk-to-html, a tool currently only distributed via NPM.
+test-snyk-generate-html-report:
+  image:
+    # Utilise a standard CLI docker images published by Snyk. 
+    # For the full list, see https://github.com/snyk/snyk-images
+    name: snyk/snyk:maven-3-jdk-20
+    entrypoint: [ "" ]
+  script:
+    - curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+    - apt-get update && apt-get install -y nodejs && npm install -g snyk-to-html
+    - snyk test --all-projects --json | snyk-to-html -o results.html
+  artifacts:
+    paths: [ "results.html" ]
+    when: always
