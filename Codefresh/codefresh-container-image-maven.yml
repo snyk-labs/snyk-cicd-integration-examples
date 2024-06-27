@@ -1,0 +1,42 @@
+# More examples of Codefresh YAML can be found at
+# https://codefresh.io/docs/docs/yaml-examples/examples/
+
+version: "1.0"
+# Stages can help you organize your steps in stages
+stages:
+  - "prepare"
+  - "verify"
+  - "deploy"
+
+steps:
+  main_clone:
+    title: "Cloning repository"
+    type: "git-clone"
+    repo: "codefresh-contrib/unlimited-test-environments-source-code"
+    revision: "${{CF_REVISION}}"
+    stage: "prepare"
+
+  run_unit_tests:
+    title: Compile/Unit test
+    stage: prepare
+    image: 'maven:3.5.2-jdk-8-alpine'
+    commands:
+      - mvn -Dmaven.repo.local=/codefresh/volume/m2_repository package   
+  build_app_image:
+    title: Building Docker Image
+    type: build
+    stage: prepare
+    image_name: kostiscodefresh/spring-actuator-sample-app
+    working_directory: ./
+    tag: '${{CF_BRANCH}}'
+    dockerfile: Dockerfile
+
+# Snyk scan starts here from a SNYK CLI image
+
+  scan_code:
+    title: Source security scan
+    stage: verify
+    image: 'snyk/snyk-cli:maven-3.6.3_java11'
+    commands:
+      - snyk monitor       
+  
