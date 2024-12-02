@@ -2,9 +2,9 @@ name: Snyk SCA, Code, IaC and Container CLI monitor example
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
@@ -24,19 +24,20 @@ steps:
     uses: actions/setup-node@v2
     with:
       node-version: ${{ matrix.node-version }}
-      cache: 'npm'
+      cache: "npm"
 
   - name: Setup Snyk + snyk-to-html # For information about the required commands for generating an HTML report see https://github.com/snyk/snyk-to-html
+    env:
+      SNYK_TOKEN: ${{ secrets.SNYK_AUTH }}
     run: |
       npm install snyk -g
       npm install snyk-to-html -g
-      snyk auth ${{secrets.SNYK_AUTH}}
+      snyk auth "$SNYK_TOKEN"
 
   - name: Snyk Open Source # For testing and failing please add snyk test before snyk monitor
     run: |
       snyk monitor
-# For a list of additional available flags/options see: https://docs.snyk.io/snyk-cli/commands
-
+  # For a list of additional available flags/options see: https://docs.snyk.io/snyk-cli/commands
   - name: Snyk Code # Remove || true to fail if there are vulnerabilities
     run: |
       snyk code test || true

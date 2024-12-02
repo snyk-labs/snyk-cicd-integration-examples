@@ -36,9 +36,11 @@ jobs:
         run: dotnet restore
 
       - name: Install & configure Snyk
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
           curl "https://static.snyk.io/cli/latest/snyk-win.exe" -o snyk.exe
-          .\snyk auth ${{secrets.SNYK_TOKEN}}
+          .\snyk auth "$SNYK_TOKEN"
 
       - name: Run Snyk Open Source (SCA)
         run: |
